@@ -11,10 +11,35 @@ import { CategoriaService } from '../../../core/services/categoria.service';
 })
 export class CategoriaLista implements OnInit {
   categorias!:Categoria[];
+  categoriaSelecionada: Categoria|null = null;
   constructor(private categoriaService: CategoriaService){
 
   }
   ngOnInit(): void {
     this.categorias = this.categoriaService.listar();
+    this.carregarCategorias();
   }
+  carregarCategorias(){
+    this.categorias = this.categoriaService.listar();
+}
+editar (Categoria: Categoria):void{
+  this.categoriaSelecionada = {...Categoria}
+}
+
+
+aoSalvar():void{
+  this.categoriaSelecionada = null;
+  this.carregarCategorias();
+}
+
+aoCancelar(): void {
+  this.categoriaSelecionada = null;
+}
+alterarSituacao(id: number): void{
+  this.categoriaService.alterarSituacao(id);
+  if (this.categoriaSelecionada?.id === id) {
+    this.categoriaSelecionada = null;
+  }
+  this.carregarCategorias();
+}
 }
