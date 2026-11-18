@@ -1,12 +1,12 @@
-import { Categoria, TipoCategoria } from './categoria.model';
-
-export interface Lancamento {
-  id: number;
+export interface LancamentoRequest {
   descricao: string;
   valor: number;
-  data: string;
-  categoria?: Categoria;
+  dataLancamento: string; // yyyy-MM-dd
+  observacao: string | null;
+  categoriaId: number;
 }
-
-// Omite o id que será definido no backend
-export type LancamentoInput = Omit<Lancamento, 'id'>;
+export interface LancamentoResponse extends LancamentoRequest {
+  id: number;
+  categoriaDescricao: string;
+  usuarioId: number;
+}
