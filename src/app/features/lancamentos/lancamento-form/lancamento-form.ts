@@ -45,7 +45,7 @@ export class LancamentoForm implements OnInit {
       observacao: v.observacao || null, categoriaId: v.categoriaId!
     };
     this.salvando.set(true); this.erro.set('');
-    this.lancamentosService.cadastrar(this.usuarioId(), dados).subscribe({
+    this.lancamentosService.cadastrar(dados).subscribe({
       next: () => {
         this.salvando.set(false);
         this.formulario.reset();

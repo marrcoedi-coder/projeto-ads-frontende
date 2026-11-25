@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { LancamentoService } from '../../../core/services/lancamento.service';
-import { LancamentoResponse } from '../../../models/lancamento.model';
+import { LancamentoRequest, LancamentoResponse } from '../../../models/lancamento.model';
 // Em lancamento-lista.ts, adicionar import:
 import { LancamentoForm } from '../lancamento-form/lancamento-form';
 
@@ -13,10 +13,11 @@ import { LancamentoForm } from '../lancamento-form/lancamento-form';
   templateUrl: './lancamento-lista.html'
 })
 export class LancamentoLista implements OnInit {
-  readonly usuarioId = 1; // APENAS para laboratório, sem JWT
   lancamentos = signal<LancamentoResponse[]>([]);
   carregando = signal(false);
   erro = signal('');
+  lancamentoSelecionada: LancamentoRequest | null = null;
+  
  
   constructor(private lancamentoService: LancamentoService) {}
   ngOnInit(): void { this.carregar(); }
@@ -24,7 +25,7 @@ export class LancamentoLista implements OnInit {
   carregar(): void {
     this.carregando.set(true);
     this.erro.set('');
-    this.lancamentoService.listar(this.usuarioId).subscribe({
+    this.lancamentoService.listar().subscribe({
       next: dados => {
         this.lancamentos.set(dados);
         this.carregando.set(false);
@@ -36,4 +37,9 @@ export class LancamentoLista implements OnInit {
       }
     });
   }
+  editar(lancamento: LancamentoRequest): void {
+    this.lancamentoSelecionada = { ...lancamento };
+  }
+
+
 }
